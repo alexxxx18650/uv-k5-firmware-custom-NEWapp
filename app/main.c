@@ -18,6 +18,8 @@
 
 #include "app/action.h"
 #include "app/app.h"
+#include "calculator.h"
+#include "notes.h"
 #include "app/chFrScanner.h"
 #include "app/common.h"
 #ifdef ENABLE_FMRADIO
@@ -227,24 +229,36 @@ static void processFKeyFunction(const KEY_Code_t Key, const bool beep)
 #endif
 			break;
 
-		case KEY_8:
-			gTxVfo->FrequencyReverse = gTxVfo->FrequencyReverse == false;
-			gRequestSaveChannel = 1;
-			break;
+case KEY_8:
+        if (gWasFKeyPressed) {
+            gWasFKeyPressed = false;
+            APP_CalculatorProcess();
+            return;
+        }
+        gTxVfo->FrequencyReverse = gTxVfo->FrequencyReverse == false;
+        gRequestSaveChannel = 1;
+        break;
 
-		case KEY_9:
-			if (RADIO_CheckValidChannel(gEeprom.CHAN_1_CALL, false, 0)) {
-				gEeprom.MrChannel[Vfo]     = gEeprom.CHAN_1_CALL;
-				gEeprom.ScreenChannel[Vfo] = gEeprom.CHAN_1_CALL;
-#ifdef ENABLE_VOICE
-				AUDIO_SetVoiceID(0, VOICE_ID_CHANNEL_MODE);
-				AUDIO_SetDigitVoice(1, gEeprom.CHAN_1_CALL + 1);
-				gAnotherVoiceID        = (VOICE_ID_t)0xFE;
-#endif
-				gRequestSaveVFO            = true;
-				gVfoConfigureMode          = VFO_CONFIGURE_RELOAD;
-				break;
-			}
+    case KEY_9:
+        if (gWasFKeyPressed) {
+            gWasFKeyPressed = false;
+            APP_NotesProcess();
+            return;
+        }
+        if (RADIO_CheckValidChannel(gEeprom.CHAN_1_CALL, false, 0)) {
+            gEeprom.MrChannel[Vfo] = gEeprom.CHAN_1_CALL;
+            gEeprom.ScreenChannel[Vfo] = gEeprom.CHAN_1_CALL;
+            
+            #ifdef ENABLE_VOICE
+                AUDIO_SetVoiceID(0, VOICE_ID_CHANNEL_MODE);
+                AUDIO_SetDigitVoice(1, gEeprom.CHAN_1_CALL + 1);
+                gAnotherVoiceID = (VOICE_ID_t)0XFE;
+            #endif
+            
+            gRequestSaveVFO = true;
+            gVfoConfigureMode = VFO_CONFIGURE_RELOAD;
+        }
+        break;
 
 			if (beep)
 				gBeepToPlay = BEEP_500HZ_60MS_DOUBLE_BEEP_OPTIONAL;
