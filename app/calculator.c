@@ -1,6 +1,6 @@
 #include "calculator.h"
-#include "ui/graphics.h"
-#include "driver/keyboard.h"
+#include "graphics.h"
+#include "keyboard.h"
 #include <stdio.h>
 
 static int32_t num1 = 0;
