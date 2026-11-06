@@ -1,6 +1,6 @@
 #include "notes.h"
-#include "ui/graphics.h"
-#include "driver/keyboard.h"
+#include "graphics.h"
+#include "keyboard.h"
 #include <string.h>
 
 static char note_text[16] = "FREQ: 145.500"; 
