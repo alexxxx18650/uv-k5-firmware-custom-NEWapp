@@ -18,8 +18,8 @@
 
 #include "app/action.h"
 #include "app/app.h"
-#include "calculator.h"
-#include "notes.h"
+#include "app/calculator.h"
+#include "app/notes.h"
 #include "app/chFrScanner.h"
 #include "app/common.h"
 #ifdef ENABLE_FMRADIO
